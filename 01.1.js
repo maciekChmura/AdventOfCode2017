@@ -4,14 +4,12 @@ const input = "89219596999173583791527386872954869423796749511541239937319456252
 let input1 = "123425";
 
 function sum(input) {
-  let b = []
-  let a = input.split("")
+  return input.split("")
     .map(element => parseInt(element, 10))
-  b = a.filter((element, index, array) =>
-    element === array[(index + array.length / 2) % (array.length)]
-  )
-  return b.reduce((a, b) => a + b, 0)
+    .filter((element, index, array) =>
+      element === array[(index + array.length / 2) % (array.length)]
+    )
+    .reduce((a, b) => a + b, 0)
 }
-
 
 console.log(sum(input));
