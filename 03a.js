@@ -15,12 +15,22 @@ for (let i = 5; i < spiral.length; i++) {
   let prev = spiral[i - 1];
   let dir = prev[3];
   if (dir === 4) {
-    curr[1] = prev[1]; //
-    curr[2] = prev[2] - 1; //
-    let canChangeDir = false;
+    updateCoord(0, -1)
+  } else if (dir === 1) {
+    updateCoord(1, 0)
+  } else if (dir === 2) {
+    updateCoord(0, 1)
+  } else {
+    updateCoord(-1, 0)
+  }
+
+  function updateCoord(x, y) {
+    curr[1] = prev[1] + x; //
+    curr[2] = prev[2] + y; //
+    let canChangeDir = true;
     for (let j = 0; j < spiral.length; j++) {
       if (curr[1] === spiral[j][1] && curr[2] === spiral[j][2]) {
-        canChangeDir = true;
+        canChangeDir = false;
       }
     }
     if (canChangeDir) {
@@ -30,20 +40,7 @@ for (let i = 5; i < spiral.length; i++) {
   }
 }
 
-function updateCoord(x, y) {
-  curr[1] = prev[1] + x; //
-  curr[2] = prev[2] + y; //
-  let canChangeDir = false;
-  for (let j = 0; j < spiral.length; j++) {
-    if (curr[1] === spiral[j][1] && curr[2] === spiral[j][2]) {
-      canChangeDir = true;
-    }
-  }
-  if (canChangeDir) {
-    dir = (dir + 1) % 4
-  }
-  curr[3] = dir;
-}
+
 
 
 console.log(spiral);
