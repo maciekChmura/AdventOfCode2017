@@ -1,129 +1,50 @@
-/*
-value, x, y, direction
-
-direction: where number wants to create new element
-1 = right
-2 = up
-3 = left
-4 = down
-
-*/
-
-
-function createSpiral(input) {
+function distanceInMemory(input) {
   let spiral = [
     [1, 0, 0, 0],
     [2, 1, 0, 3],
     [3, 1, 1, 4],
     [4, 0, 1, 4],
     [5, -1, 1, 4],
-    [6, null, null, 0],
-    [7, null, null, 0],
-    [8, null, null, 0],
-    [9, null, null, 0],
   ];
-  //check if there is space to create an element based on direction
-  //  loop the spiral to search for specific x and y
-  for (let i = 4; i < 9; i++) {
-    const element = spiral[i];
-    let x = element[1];
-    let y = element[2];
-    if (element[3] === 1) {
-      for (let j = 0; j < i + 1; j++) {
-        const coord = spiral[j];
-        let xToCheck = x + 1;
-        let yToCheck = y;
-        if (spiral[j][1] == null && spiral[j][2] == null) {
-          spiral[i + 1][0] = i + 2;
-          spiral[i + 1][1] = xToCheck;
-          spiral[i + 1][2] = yToCheck;
-          spiral[i + 1][3] = (spiral[i][3] + 1) % 4;
-          break;
-        }
-      }
-      spiral[i + 1][0] = i + 2;
-      spiral[i + 1][1] = x;
-      spiral[i + 1][2] = y - 1;
-      spiral[i + 1][3] = spiral[i][3];
-    } else if (element[3] === 2) {
-      for (let j = 0; j < i + 1; j++) {
-        const coord = spiral[j];
-        let xToCheck = x;
-        let yToCheck = y + 1;
-        if (spiral[j][1] == null && spiral[j][2] == null) {
-          spiral[i + 1][0] = i + 2;
-          spiral[i + 1][1] = xToCheck;
-          spiral[i + 1][2] = yToCheck;
-          spiral[i + 1][3] = (spiral[i][3] + 1) % 4;
-          break;
-        }
-      }
-    } else if (element[3] === 3) {
-      for (let j = 0; j < i + 1; j++) {
-        const coord = spiral[j];
-        let xToCheck = x - 1;
-        let yToCheck = y;
-        if (spiral[j][1] == null && spiral[j][2] == null) {
-          spiral[i + 1][0] = i + 2;
-          spiral[i + 1][1] = xToCheck;
-          spiral[i + 1][2] = yToCheck;
-          spiral[i + 1][3] = (spiral[i][3] + 1) % 4;
-          break;
-        }
-      }
-    } else { //4
-      for (let j = 0; j < input; j++) {
-        const coord = spiral[j];
-        let xToCheck = x;
-        let yToCheck = y - 1;
-        if (spiral[j][1] == null && spiral[j][2] == null) {
-          spiral[i + 1][0] = i + 2;
-          spiral[i + 1][1] = xToCheck;
-          spiral[i + 1][2] = yToCheck;
-          spiral[i + 1][3] = (spiral[i][3] + 1) % 4;
-          break;
-        }
 
-
-      }
-    }
-    console.log(spiral);
-
-
-    //if there is no space create new element in the same direction
-    //  increment x and y
-    //if there is empty space:
-    //  change direction
-    //  create new element 
-
-
-    // for (let i = 4; i < input; i++) {
-
-    //   let x = -1;
-    //   let y = 1;
-    //   let direction = spiral[i][3]
-    //   //check if there is a empty space to create new element
-    //   //direction of 5 is 4 -> down
-
-    //   if (direction === 4) {
-    //     let newX = x;
-    //     let newY = y - 1;
-    //     // let newDirection = direction % 4 + 1
-
-    //     spiral.push([i + 1, newX, newY, direction])
-    //     x = newX;
-    //     y = newY;
-    //   }
-
-    // }
-
-
-
-
-
+  for (let s = 6; s <= input; s++) {
+    spiral.push([s, null, null, 0])
   }
-  return spiral;
-}
-console.log((4 + 0) % 4);
 
-console.log(createSpiral(23));
+  for (let i = 5; i < spiral.length; i++) {
+    let curr = spiral[i];
+    let prev = spiral[i - 1];
+    let dir = prev[3];
+    if (dir === 4) {
+      updateCoord(0, -1, 1, 0)
+    } else if (dir === 1) {
+      updateCoord(1, 0, 0, 1)
+    } else if (dir === 2) {
+      updateCoord(0, 1, -1, 0)
+    } else {
+      updateCoord(-1, 0, 0, -1)
+    }
+    console.log(`currently updating ${i} of ${input}`);
+
+    function updateCoord(x, y, dx, dy) {
+      curr[1] = prev[1] + x; //
+      curr[2] = prev[2] + y; //
+      let canChangeDir = true;
+      for (let j = 0; j < spiral.length; j++) {
+        if (curr[1] + dx === spiral[j][1] && curr[2] + dy === spiral[j][2]) {
+          canChangeDir = false;
+        }
+      }
+      if (canChangeDir) {
+        dir = (dir % 4) + 1
+      }
+      curr[3] = dir;
+    }
+  }
+
+  let distance = Math.abs(spiral[input - 1][1]) + Math.abs(spiral[input - 1][2])
+  return ` distance is: ${distance}`;
+
+}
+
+console.log(distanceInMemory(265149));
